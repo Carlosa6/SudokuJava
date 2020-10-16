@@ -5,6 +5,7 @@
  */
 package javasudoku;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,27 +19,17 @@ import javafx.stage.Stage;
  * @author AARON
  */
 public class JavaSUDOKU extends Application {
+    private IUserInterfaceContract.View uiImpl;
     
     @Override
-    public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void start(Stage primaryStage) throws Exception{
+        uiImpl = new UserInterfaceImpl(primaryStage);
+        try {
+            SudokuBuildLogic.build(uiImpl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     /**
