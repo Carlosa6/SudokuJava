@@ -5,6 +5,8 @@
  */
 package javasudoku;
 
+import computationlogic.SudokuUtilities;
+import constants.GameState;
 import java.io.Serializable;
 
 /**

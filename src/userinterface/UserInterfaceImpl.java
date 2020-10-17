@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -115,7 +116,17 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
 
     @Override
     public void handle(KeyEvent event) {
-    
+        if(event.getEventType() == KeyEvent.KEY_PRESSED){
+            if(event.getText().matches("[0-9]")){
+                int value = Integer.parseInt(event.getText());
+                handleInput(value,event.getSource());
+            }else if(event.getCode() == KeyCode.BACK_SPACE){
+                handleInput(0,event.getSource());
+            }else{
+                ((TextField) event.getSource()).setText("");
+            }
+        }
+        event.consume();
     }
 
     private void drawBackground(Group root) {
@@ -211,6 +222,10 @@ public class UserInterfaceImpl implements IUserInterfaceContract.View,
         tile.setLayoutY(y);
         tile.setPrefHeight(64);
         tile.setPrefWidth(64);
+    }
+
+    private void handleInput(int value, Object source) {
+        listener.onSudokuInput(((SudokuTextField) source).getX(), ((SudokuTextField) source).getY(), value);
     }
     
     
